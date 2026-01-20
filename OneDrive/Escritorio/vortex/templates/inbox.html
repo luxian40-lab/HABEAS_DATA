@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave | Agent Inbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .ticket-card { transition: all 0.3s; border-left: 4px solid transparent; }
+        .ticket-card:hover { transform: translateX(5px); background: rgba(59, 130, 246, 0.1); }
+        .loader { border-top-color: #3498db; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Scrollbar personalizada */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); rounded: 10px; }
+    </style>
+</head>
+<body class="min-h-screen p-6 flex flex-col items-center" onload="cargarPendientes()">
+
+    <header class="w-full max-w-6xl flex justify-between items-center mb-8 bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                <i class="fas fa-water"></i>
+            </div>
+            <h1 class="text-xl font-bold tracking-wide">Wave <span class="text-slate-500 font-light">Agent</span></h1>
+        </div>
+        <a href="/" class="text-xs font-bold text-slate-400 hover:text-white transition uppercase tracking-widest bg-slate-800 px-4 py-2 rounded-full border border-slate-700 hover:border-slate-500">
+            <i class="fas fa-arrow-left mr-2"></i>Volver al Manager
+        </a>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-6xl h-[80vh]">
+        
+        <div class="glass-panel rounded-2xl p-4 flex flex-col h-full col-span-1 shadow-2xl">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4 flex justify-between items-center border-b border-slate-700 pb-3">
+                <span><i class="fas fa-inbox mr-2 text-blue-400"></i>Bandeja de Entrada</span>
+                <button onclick="cargarPendientes()" class="hover:text-blue-400 transition" title="Refrescar"><i class="fas fa-sync-alt"></i></button>
+            </h2>
+            <div id="listaTickets" class="overflow-y-auto flex-1 space-y-2 pr-2 custom-scrollbar">
+                <div class="text-center text-slate-500 mt-10 text-xs italic">Buscando tickets...</div>
+            </div>
+        </div>
+
+        <div class="glass-panel rounded-2xl p-6 col-span-2 flex flex-col relative shadow-2xl">
+            
+            <div id="welcomeState" class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 opacity-40">
+                <i class="fas fa-hand-holding-water text-7xl mb-4"></i>
+                <p class="font-light tracking-wide">Selecciona un ticket para comenzar</p>
+            </div>
+
+            <div id="workState" class="hidden h-full flex flex-col">
+                <div class="flex justify-between items-start mb-6 border-b border-slate-700 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-1" id="ticketUser">Usuario</h2>
+                        <div class="text-xs text-slate-400 font-mono bg-slate-800 px-2 py-1 rounded inline-block" id="ticketRef">REF-0000</div>
+                    </div>
+                    <span id="riskBadge" class="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-700 text-slate-300 border border-slate-600">
+                        Esperando Análisis
+                    </span>
+                </div>
+
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-700/50 mb-6 shadow-inner">
+                    <div class="text-[10px] text-slate-500 uppercase mb-2 font-bold tracking-widest flex items-center gap-2">
+                        <i class="fas fa-user-secret"></i> Mensaje Original (Anonimizado)
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed" id="ticketText">...</p>
+                </div>
+
+                <div class="flex-1 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-1 border border-slate-700 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition"><i class="fas fa-brain text-8xl"></i></div>
+                    
+                    <div id="aiLoading" class="hidden absolute inset-0 bg-slate-900/95 z-20 flex flex-col items-center justify-center backdrop-blur-sm">
+                        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-4"></div>
+                        <h2 class="text-center text-white text-xs font-bold animate-pulse tracking-widest">WAVE AI ANALIZANDO...</h2>
+                    </div>
+
+                    <div id="aiPrompt" class="h-full flex items-center justify-center p-6">
+                        <button onclick="analizarTicketActual()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-2xl shadow-lg shadow-blue-500/20 transition transform hover:scale-105 flex flex-col items-center gap-2">
+                            <i class="fas fa-bolt text-2xl"></i> 
+                            <span>ACTIVAR WAVE AI</span>
+                        </button>
+                    </div>
+
+                    <div id="aiResult" class="hidden p-5 h-full flex flex-col">
+                        <div class="flex gap-4 mb-4">
+                            <div class="flex-1 bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                                <div class="text-[10px] text-slate-500 uppercase font-bold">Intención Detectada</div>
+                                <div class="text-sm font-bold text-white mt-1" id="aiIntent">...</div>
+                            </div>
+                            <div class="flex-1 bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                                <div class="text-[10px] text-slate-500 uppercase font-bold">Sentimiento</div>
+                                <div class="text-sm font-bold text-white mt-1" id="aiEmotion">...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col">
+                            <div class="text-xs text-cyan-400 font-bold mb-2 flex items-center gap-2"><i class="fas fa-magic"></i> Respuesta Sugerida:</div>
+                            <textarea id="aiResponse" class="w-full bg-slate-950/50 border border-slate-600 rounded-lg p-3 text-sm text-slate-300 focus:border-cyan-500 focus:outline-none flex-1 resize-none font-sans leading-relaxed"></textarea>
+                        </div>
+                        
+                        <button onclick="cerrarTicket()" class="mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg shadow-lg transition transform hover:scale-[1.01] flex justify-center items-center gap-2">
+                            <span>Aprobar y Enviar Respuesta</span> <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTicketId = null;
+        let currentTicketText = "";
+
+        // 1. CARGAR TICKETS AL INICIAR
+        async function cargarPendientes() {
+            const lista = document.getElementById('listaTickets');
+            lista.innerHTML = '<div class="text-center text-xs text-slate-500 mt-4"><i class="fas fa-spinner fa-spin mr-2"></i>Actualizando...</div>';
+            
+            try {
+                // Llama al backend (api_vortex.py)
+                const res = await fetch('http://localhost:8000/tickets_pendientes');
+                const data = await res.json();
+                
+                lista.innerHTML = '';
+                if(data.length === 0) {
+                    lista.innerHTML = '<div class="text-center text-xs text-slate-500 mt-10 p-4 border border-dashed border-slate-700 rounded-lg">¡Todo limpio!<br>No hay tickets pendientes. 🍃</div>';
+                    return;
+                }
+
+                data.forEach(t => {
+                    lista.innerHTML += `
+                    <div onclick="seleccionarTicket(${t.id}, '${t.usuario}', '${t.ref}', \`${t.original}\`)" 
+                         class="ticket-card p-4 bg-slate-800/40 rounded-xl cursor-pointer border-l-4 border-slate-600 hover:border-blue-500 mb-2 group">
+                        <div class="flex justify-between mb-1">
+                            <span class="font-bold text-sm text-white group-hover:text-blue-400 transition">${t.usuario}</span>
+                            <span class="text-[10px] text-slate-500 bg-slate-900 px-1.5 py-0.5 rounded">${t.fecha.split(' ')[1]}</span>
+                        </div>
+                        <div class="text-xs text-slate-400 truncate opacity-70">${t.original}</div>
+                    </div>`;
+                });
+            } catch(e) { 
+                console.error(e); 
+                lista.innerHTML = "<div class='text-red-400 text-xs text-center mt-4'>Error conectando con API (Puerto 8000)</div>"; 
+            }
+        }
+
+        // 2. SELECCIONAR UN TICKET
+        function seleccionarTicket(id, user, ref, text) {
+            currentTicketId = id;
+            currentTicketText = text;
+            
+            // UI Switch
+            document.getElementById('welcomeState').classList.add('hidden');
+            document.getElementById('workState').classList.remove('hidden');
+            
+            // Rellenar datos
+            document.getElementById('ticketUser').innerText = user;
+            document.getElementById('ticketRef').innerText = ref;
+            document.getElementById('ticketText').innerText = text;
+            
+            // Resetear estado IA
+            document.getElementById('aiResult').classList.add('hidden');
+            document.getElementById('aiPrompt').classList.remove('hidden');
+            document.getElementById('riskBadge').className = "px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-700 text-slate-300 border border-slate-600";
+            document.getElementById('riskBadge').innerText = "ESPERANDO ANÁLISIS";
+        }
+
+        // 3. LLAMAR A LA IA (CoreTex)
+        async function analizarTicketActual() {
+            if(!currentTicketId) return;
+            
+            document.getElementById('aiLoading').classList.remove('hidden');
+            
+            try {
+                const res = await fetch('http://localhost:8000/analizar_ticket', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ texto: currentTicketText, id_db: currentTicketId })
+                });
+                const analysis = await res.json();
+                
+                // Mostrar Resultados
+                document.getElementById('aiLoading').classList.add('hidden');
+                document.getElementById('aiPrompt').classList.add('hidden');
+                document.getElementById('aiResult').classList.remove('hidden');
+                
+                // Rellenar campos IA
+                document.getElementById('aiIntent').innerText = analysis.tipo_ticket;
+                document.getElementById('aiEmotion').innerText = analysis.emocion + " (" + (analysis.riesgo_churn) + "% Riesgo)";
+                document.getElementById('aiResponse').value = analysis.respuesta_sugerida;
+                
+                // Colorear el Badge de Riesgo
+                const badge = document.getElementById('riskBadge');
+                badge.innerText = `RIESGO DETECTADO: ${analysis.riesgo_churn}%`;
+                
+                if(analysis.riesgo_churn >= 80) {
+                    badge.className = "px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-red-900/50 text-red-200 border border-red-500 animate-pulse";
+                } else if(analysis.riesgo_churn >= 50) {
+                    badge.className = "px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-900/50 text-yellow-200 border border-yellow-500";
+                } else {
+                    badge.className = "px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-green-900/50 text-green-200 border border-green-500";
+                }
+
+            } catch(e) {
+                alert("Error al conectar con Wave Brain. Revisa la consola.");
+                document.getElementById('aiLoading').classList.add('hidden');
+            }
+        }
+
+        // 4. CERRAR TICKET
+        function cerrarTicket() {
+            // Animación simple de éxito
+            const btn = document.querySelector('#aiResult button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> ¡Enviado!';
+            btn.classList.remove('bg-emerald-600');
+            btn.classList.add('bg-slate-700');
+            
+            setTimeout(() => {
+                document.getElementById('workState').classList.add('hidden');
+                document.getElementById('welcomeState').classList.remove('hidden');
+                
+                // Restaurar botón
+                btn.innerHTML = originalText;
+                btn.classList.add('bg-emerald-600');
+                btn.classList.remove('bg-slate-700');
+                
+                cargarPendientes(); // Recargar lista
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
