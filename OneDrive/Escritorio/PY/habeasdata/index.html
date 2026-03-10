@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Tratamiento de Datos Personales — eki</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Lora (serif legal/editorial) + DM Sans (lectura cómoda) -->
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================
+       TOKENS
+    ========================================= */
+    :root {
+      --purple-deep:   #3A005E;
+      --purple-main:   #4A007A;
+      --purple-mid:    #5C0096;
+      --purple-light:  #7B2DB2;
+      --purple-tint:   #F3EAFC;
+      --purple-tint2:  #EDE0F8;
+      --green-lime:    #78C822;
+      --green-dark:    #5EA018;
+      --green-tint:    #F0FAE6;
+      --white:         #FFFFFF;
+      --grey-50:       #F7F7F9;
+      --grey-100:      #EFEFF3;
+      --grey-200:      #DCDCE5;
+      --grey-400:      #9898AA;
+      --grey-600:      #5E5E75;
+      --grey-700:      #3E3E52;
+      --grey-900:      #1A1A2E;
+
+      --font-legal:  'Lora', Georgia, 'Times New Roman', serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --radius-xl:  32px;
+
+      --shadow-card: 0 4px 24px rgba(74,0,122,.09), 0 1px 4px rgba(74,0,122,.05);
+    }
+
+    /* =========================================
+       RESET & BASE
+    ========================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--grey-900);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: var(--purple-main); text-decoration: none; transition: color .2s; }
+    a:hover { color: var(--green-dark); text-decoration: underline; }
+
+    /* =========================================
+       ANIMATIONS
+    ========================================= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scalePop {
+      0%   { opacity: 0; transform: scale(.7); }
+      70%  { transform: scale(1.06); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .4; }
+    }
+    .a1 { animation: fadeUp .6s ease both; }
+    .a2 { animation: fadeUp .6s .12s ease both; }
+    .a3 { animation: fadeUp .6s .24s ease both; }
+    .a4 { animation: fadeUp .6s .36s ease both; }
+    .a5 { animation: fadeUp .6s .48s ease both; }
+    .pop { animation: scalePop .6s .1s cubic-bezier(.34,1.56,.64,1) both; }
+
+    /* =========================================
+       LAYOUT
+    ========================================= */
+    .container {
+      width: 100%;
+      max-width: 820px;
+      margin-inline: auto;
+      padding-inline: clamp(20px, 5vw, 48px);
+    }
+    .container--wide { max-width: 1000px; }
+    .section { padding-block: clamp(48px, 7vw, 88px); }
+    .section--alt { background: var(--grey-50); }
+    .section--purple-tint { background: var(--purple-tint); }
+
+    /* =========================================
+       HEADER
+    ========================================= */
+    .site-header {
+      background: var(--purple-deep);
+      padding-block: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 18px rgba(0,0,0,.28);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-wrap img {
+      height: 36px;
+      width: auto;
+      display: block;
+    }
+    .header-sep {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,.18);
+    }
+    .header-doc-title {
+      font-family: var(--font-legal);
+      font-size: .78rem;
+      font-style: italic;
+      color: rgba(255,255,255,.55);
+      line-height: 1.3;
+    }
+    .header-badge {
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--green-lime);
+      border: 1.5px solid rgba(120,200,34,.35);
+      border-radius: 100px;
+      padding: 4px 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* =========================================
+       HERO LEGAL
+    ========================================= */
+    .hero {
+      background: var(--purple-main);
+      position: relative;
+      overflow: hidden;
+      padding-block: clamp(52px, 9vw, 96px);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 55% at 90% 10%, rgba(120,200,34,.09), transparent),
+        radial-gradient(ellipse 40% 60% at 5% 90%, rgba(255,255,255,.04), transparent);
+      pointer-events: none;
+    }
+    /* Subtle grid lines */
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .045;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(255,255,255,1) 48px, rgba(255,255,255,1) 49px),
+        repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(255,255,255,1) 48px, rgba(255,255,255,1) 49px);
+    }
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.15);
+      margin-bottom: 28px;
+    }
+    .hero-icon-wrap svg { width: 36px; height: 36px; stroke: var(--green-lime); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+    .hero-law-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(120,200,34,.13);
+      border: 1px solid rgba(120,200,34,.35);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      color: var(--green-lime);
+      margin-bottom: 20px;
+    }
+    .law-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-lime);
+      animation: pulse-dot 2s ease infinite;
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: var(--font-legal);
+      font-size: clamp(1.7rem, 5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.18;
+      letter-spacing: -.025em;
+      margin-bottom: 18px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--green-lime);
+    }
+    .hero-lead {
+      font-size: clamp(.88rem, 2.2vw, 1rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.78);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .hero-lead strong { color: var(--white); font-weight: 600; }
+
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      font-size: .74rem;
+      color: rgba(255,255,255,.65);
+    }
+    .meta-chip svg { width: 13px; height: 13px; stroke: rgba(255,255,255,.5); fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+
+    /* =========================================
+       TABLE OF CONTENTS
+    ========================================= */
+    .toc-section { background: var(--grey-50); padding-block: 36px; border-bottom: 1.5px solid var(--grey-200); }
+    .toc-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--grey-400);
+      margin-bottom: 14px;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 4px 20px;
+    }
+    .toc-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: .82rem;
+      color: var(--grey-600);
+      padding: 5px 0;
+      border-bottom: 1px solid transparent;
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .toc-item:hover { color: var(--purple-main); text-decoration: none; }
+    .toc-item:hover .toc-num { color: var(--green-dark); }
+    .toc-num {
+      font-family: var(--font-legal);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--purple-light);
+      min-width: 18px;
+      flex-shrink: 0;
+    }
+
+    /* =========================================
+       LEGAL CONTENT
+    ========================================= */
+    /* Article section wrapper */
+    .legal-article {
+      padding-block: clamp(40px, 6vw, 72px);
+    }
+    .legal-article + .legal-article {
+      border-top: 1.5px solid var(--grey-100);
+    }
+    .legal-article--alt { background: var(--grey-50); }
+    .legal-article--tint { background: var(--purple-tint); }
+
+    /* Article header */
+    .article-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .64rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 10px;
+    }
+    .article-num-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--purple-main);
+      color: var(--white);
+      font-family: var(--font-legal);
+      font-size: .7rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .article-title {
+      font-family: var(--font-legal);
+      font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--purple-deep);
+      line-height: 1.25;
+      letter-spacing: -.02em;
+      margin-bottom: 18px;
+    }
+    .article-title em { font-style: italic; color: var(--purple-light); }
+
+    /* Body text */
+    .legal-text {
+      font-family: var(--font-legal);
+      font-size: clamp(.88rem, 2vw, .97rem);
+      color: var(--grey-700);
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+    .legal-text strong { color: var(--grey-900); font-weight: 600; font-family: var(--font-body); }
+    .legal-text em { font-style: italic; }
+
+    .legal-note {
+      font-family: var(--font-body);
+      font-size: .8rem;
+      color: var(--grey-400);
+      font-style: italic;
+      line-height: 1.65;
+      margin-top: -10px;
+      margin-bottom: 18px;
+    }
+
+    /* Highlight box */
+    .highlight-box {
+      background: var(--purple-tint);
+      border-left: 4px solid var(--purple-main);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 18px 22px;
+      margin-block: 22px;
+    }
+    .highlight-box.green {
+      background: var(--green-tint);
+      border-left-color: var(--green-dark);
+    }
+    .highlight-box.amber {
+      background: #FFF8E6;
+      border-left-color: #D4900A;
+    }
+    .highlight-box-title {
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--purple-main);
+      margin-bottom: 7px;
+    }
+    .highlight-box.green .highlight-box-title { color: var(--green-dark); }
+    .highlight-box.amber .highlight-box-title { color: #D4900A; }
+    .highlight-box-body {
+      font-family: var(--font-legal);
+      font-size: .88rem;
+      color: var(--grey-700);
+      line-height: 1.75;
+    }
+
+    /* Legal list */
+    .legal-list {
+      list-style: none;
+      margin-block: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .legal-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-family: var(--font-legal);
+      font-size: clamp(.86rem, 2vw, .94rem);
+      color: var(--grey-700);
+      line-height: 1.75;
+    }
+    .legal-list li::before {
+      content: attr(data-n);
+      min-width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--purple-main);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .68rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .legal-list.green li::before { background: var(--green-dark); }
+    .legal-list.dash li::before {
+      content: '—';
+      background: transparent;
+      color: var(--purple-light);
+      font-size: .9rem;
+      height: auto;
+      min-width: auto;
+      width: auto;
+      margin-top: 0;
+    }
+
+    /* Data table */
+    .data-table-wrap { overflow-x: auto; margin-block: 22px; }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .83rem;
+    }
+    .data-table thead tr {
+      background: var(--purple-main);
+      color: var(--white);
+    }
+    .data-table thead th {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+    }
+    .data-table tbody tr { border-bottom: 1px solid var(--grey-100); }
+    .data-table tbody tr:nth-child(even) { background: var(--grey-50); }
+    .data-table tbody td {
+      font-family: var(--font-legal);
+      padding: 11px 16px;
+      color: var(--grey-700);
+      line-height: 1.55;
+      vertical-align: top;
+    }
+    .data-table tbody td:first-child {
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--grey-900);
+      font-size: .82rem;
+    }
+    .tag-legal {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 100px;
+      font-family: var(--font-body);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .tag-legal.required { background: #FDECEA; color: #C0392B; }
+    .tag-legal.optional { background: var(--green-tint); color: var(--green-dark); }
+    .tag-legal.auto    { background: var(--purple-tint); color: var(--purple-main); }
+
+    /* Rights grid */
+    .rights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .right-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      transition: box-shadow .25s, border-color .25s;
+    }
+    .right-card:hover {
+      box-shadow: var(--shadow-card);
+      border-color: rgba(74,0,122,.2);
+    }
+    .right-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--purple-tint);
+      font-family: var(--font-legal);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple-main);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    .right-title {
+      font-family: var(--font-body);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 6px;
+    }
+    .right-body {
+      font-family: var(--font-legal);
+      font-size: .8rem;
+      color: var(--grey-400);
+      line-height: 1.65;
+    }
+
+    /* Security cards */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .sec-card {
+      background: var(--white);
+      border: 1.5px solid var(--grey-200);
+      border-radius: var(--radius-md);
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sec-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--purple-tint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-icon svg { width: 20px; height: 20px; stroke: var(--purple-main); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .sec-title {
+      font-family: var(--font-body);
+      font-size: .84rem;
+      font-weight: 700;
+      color: var(--grey-900);
+      margin-bottom: 4px;
+    }
+    .sec-body {
+      font-family: var(--font-legal);
+      font-size: .78rem;
+      color: var(--grey-400);
+      line-height: 1.65;
+    }
+
+    /* =========================================
+       CONTACT CTA
+    ========================================= */
+    .contact-section {
+      background: linear-gradient(135deg, var(--purple-deep), var(--purple-mid));
+      padding-block: clamp(52px, 8vw, 88px);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(120,200,34,.11), transparent),
+        radial-gradient(ellipse 35% 50% at 10% 80%, rgba(255,255,255,.04), transparent);
+      pointer-events: none;
+    }
+    .contact-content { position: relative; z-index: 2; text-align: center; }
+    .contact-title {
+      font-family: var(--font-legal);
+      font-size: clamp(1.45rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -.025em;
+      line-height: 1.22;
+      margin-bottom: 14px;
+    }
+    .contact-title em { font-style: italic; color: var(--green-lime); }
+    .contact-lead {
+      font-size: .95rem;
+      color: rgba(255,255,255,.72);
+      max-width: 500px;
+      margin-inline: auto;
+      line-height: 1.72;
+      margin-bottom: 36px;
+    }
+    .contact-card {
+      display: inline-block;
+      background: rgba(255,255,255,.07);
+      border: 1.5px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius-lg);
+      padding: 28px 36px;
+      text-align: left;
+      max-width: 440px;
+      width: 100%;
+    }
+    .contact-card-label {
+      font-family: var(--font-body);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 8px;
+    }
+    .contact-email {
+      font-family: var(--font-legal);
+      font-size: clamp(.95rem, 2.5vw, 1.15rem);
+      font-weight: 600;
+      color: var(--green-lime);
+      word-break: break-all;
+      margin-bottom: 14px;
+    }
+    .contact-details {
+      font-family: var(--font-legal);
+      font-size: .82rem;
+      color: rgba(255,255,255,.55);
+      line-height: 1.7;
+    }
+    .contact-details strong { color: rgba(255,255,255,.8); font-family: var(--font-body); font-weight: 600; }
+
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-lime);
+      color: var(--purple-deep);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 700;
+      padding: 13px 28px;
+      border-radius: var(--radius-xl);
+      margin-top: 20px;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      text-decoration: none;
+    }
+    .btn-email:hover {
+      background: #8AD630;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(120,200,34,.4);
+      text-decoration: none;
+      color: var(--purple-deep);
+    }
+    .btn-email svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .response-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .response-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: .72rem;
+      color: rgba(255,255,255,.6);
+    }
+    .response-chip svg { width: 11px; height: 11px; stroke: rgba(120,200,34,.8); fill: none; stroke-width: 2.5; stroke-linecap: round; flex-shrink: 0; }
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+    .site-footer {
+      background: var(--purple-deep);
+      padding-block: clamp(28px, 4vw, 48px);
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+    }
+    @media (min-width: 600px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+        align-items: flex-start;
+      }
+    }
+    .footer-logo img { height: 32px; width: auto; }
+    .footer-tagline {
+      font-family: var(--font-legal);
+      font-size: .75rem;
+      font-style: italic;
+      color: rgba(255,255,255,.38);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      justify-content: center;
+    }
+    .footer-links a {
+      font-size: .75rem;
+      color: rgba(255,255,255,.45);
+      transition: color .2s;
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--green-lime); text-decoration: none; }
+    .footer-copy {
+      font-size: .68rem;
+      color: rgba(255,255,255,.25);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+    .footer-law-tag {
+      display: inline-block;
+      margin-top: 10px;
+      font-family: var(--font-body);
+      font-size: .63rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: rgba(120,200,34,.12);
+      color: rgba(120,200,34,.7);
+      border: 1px solid rgba(120,200,34,.2);
+      border-radius: 100px;
+      padding: 3px 10px;
+    }
+
+    /* Security bar */
+    .sec-bar {
+      background: var(--grey-900);
+      padding-block: 9px;
+      text-align: center;
+    }
+    .sec-bar-text {
+      font-size: .65rem;
+      color: rgba(255,255,255,.3);
+      letter-spacing: .07em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sec-bar-text span { color: rgba(120,200,34,.65); }
+    .sec-bar-text svg { opacity: .45; flex-shrink: 0; }
+
+    /* divider */
+    hr.legal-hr {
+      border: none;
+      border-top: 1.5px solid var(--grey-100);
+      margin-block: 28px;
+    }
+
+    /* last updated pill */
+    .last-updated {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--grey-100);
+      border: 1px solid var(--grey-200);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-family: var(--font-body);
+      font-size: .7rem;
+      font-weight: 500;
+      color: var(--grey-400);
+      margin-top: 24px;
+    }
+    .last-updated svg { width: 12px; height: 12px; stroke: var(--grey-400); fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+
+    @media (max-width: 480px) {
+      .rights-grid    { grid-template-columns: 1fr 1fr; }
+      .security-grid  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 340px) {
+      .rights-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER
+  ============================================================ -->
+  <header class="site-header">
+    <div class="container container--wide header-inner">
+      <div class="logo-wrap">
+        <span style="font-family:var(--font-legal);font-size:1.45rem;font-weight:700;color:var(--white);letter-spacing:-.02em;">eki</span>
+        <div class="header-sep"></div>
+        <div class="header-doc-title">
+          Política de Tratamiento<br/>de Datos Personales
+        </div>
+      </div>
+      <div class="header-badge">Ley 1581 · 2012</div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section class="hero">
+    <div class="hero-lines" aria-hidden="true"></div>
+    <div class="container hero-content">
+
+      <div class="a1">
+        <div class="hero-icon-wrap pop" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="a1">
+        <div class="hero-law-pill">
+          <span class="law-dot"></span>
+          Documento Oficial · Habeas Data · Colombia
+        </div>
+      </div>
+
+      <h1 class="hero-title a2">
+        Política de Tratamiento<br/>de <em>Datos Personales</em>
+      </h1>
+
+      <p class="hero-lead a3">
+        En <strong>eki — Educación con equidad</strong> reconocemos que sus datos personales
+        son suyos. Esta política explica de manera clara y transparente cómo los recolectamos,
+        para qué los usamos y cómo ejercer sus derechos consagrados en la
+        <strong>Ley 1581 de 2012</strong> y el <strong>Decreto 1377 de 2013</strong>.
+      </p>
+
+      <div class="hero-meta-row a4">
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Vigente desde: 25 de febrero de 2025
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Última revisión: 25 de febrero de 2025
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Aplica a todos los estudiantes y usuarios eki
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TABLE OF CONTENTS
+  ============================================================ -->
+  <section class="toc-section">
+    <div class="container container--wide">
+      <div class="toc-label">Contenido de este documento</div>
+      <nav class="toc-grid" aria-label="Tabla de contenido">
+        <a href="#responsable"  class="toc-item"><span class="toc-num">I</span>  Responsable del tratamiento</a>
+        <a href="#datos"        class="toc-item"><span class="toc-num">II</span> Datos que recolectamos</a>
+        <a href="#finalidades"  class="toc-item"><span class="toc-num">III</span>Finalidades del tratamiento</a>
+        <a href="#derechos"     class="toc-item"><span class="toc-num">IV</span> Sus derechos (ARCOP)</a>
+        <a href="#whatsapp"     class="toc-item"><span class="toc-num">V</span>  Datos en WhatsApp</a>
+        <a href="#seguridad"    class="toc-item"><span class="toc-num">VI</span> Medidas de seguridad</a>
+        <a href="#vigencia"     class="toc-item"><span class="toc-num">VII</span>Vigencia y conservación</a>
+        <a href="#solicitudes"  class="toc-item"><span class="toc-num">VIII</span>Cómo ejercer sus derechos</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       I. RESPONSABLE
+  ============================================================ -->
+  <article class="legal-article" id="responsable">
+    <div class="container">
+      <div class="a1">
+        <div class="article-eyebrow">
+          <span class="article-num-badge">I</span>
+          Responsable del tratamiento
+        </div>
+        <h2 class="article-title">¿Quién es responsable de<br/><em>sus datos personales?</em></h2>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">Responsable del Tratamiento</div>
+        <div class="highlight-box-body">
+          <strong style="font-family:var(--font-body);">eki — Educación con equidad</strong><br/>
+          Plataforma educativa para comunidades rurales y corporativas de Colombia.<br/>
+          Correo de atención: <a href="mailto:comunidad.educativa@eki.com.co">comunidad.educativa@eki.com.co</a><br/>
+          Canal principal de formación: WhatsApp (a través de Twilio)
+        </div>
+      </div>
+
+      <p class="legal-text">
+        Como responsable del tratamiento, <strong>eki</strong> determina los fines y los medios del tratamiento
+        de los datos personales de sus estudiantes, colaboradores y demás titulares. Esta política
+        aplica a toda persona natural cuyos datos sean recolectados a través de la plataforma eki,
+        incluyendo quienes interactúan mediante WhatsApp, formularios de inscripción o cualquier
+        otro canal oficial.
+      </p>
+      <p class="legal-text">
+        La presente política fue adoptada en cumplimiento de la <strong>Ley 1581 de 2012</strong>,
+        reglamentada por el <strong>Decreto 1377 de 2013</strong> y demás normas que la modifiquen,
+        adicionen o complementen, reguladoras de la protección de datos personales en Colombia.
+      </p>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       II. DATOS QUE RECOLECTAMOS
+  ============================================================ -->
+  <article class="legal-article legal-article--alt" id="datos">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">II</span>
+        Datos recolectados
+      </div>
+      <h2 class="article-title">¿Qué datos personales<br/><em>recolectamos?</em></h2>
+
+      <p class="legal-text">
+        eki recolecta únicamente los datos necesarios para cumplir con sus finalidades educativas
+        y de formación. A continuación se describen las categorías de datos tratados, su carácter
+        y la fuente de recolección.
+      </p>
+
+      <div class="data-table-wrap">
+        <table class="data-table" role="table">
+          <thead>
+            <tr>
+              <th>Dato personal</th>
+              <th>Finalidad principal</th>
+              <th>Carácter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nombre completo</td>
+              <td>Identificación del estudiante, emisión de certificados</td>
+              <td><span class="tag-legal required">Obligatorio</span></td>
+            </tr>
+            <tr>
+              <td>Número de celular (WhatsApp)</td>
+              <td>Canal principal de formación y comunicación</td>
+              <td><span class="tag-legal required">Obligatorio</span></td>
+            </tr>
+            <tr>
+              <td>Cédula de ciudadanía / tipo de documento</td>
+              <td>Verificación de identidad, certificados legales</td>
+              <td><span class="tag-legal required">Obligatorio</span></td>
+            </tr>
+            <tr>
+              <td>Municipio y departamento</td>
+              <td>Contextualización pedagógica, estadísticas de impacto</td>
+              <td><span class="tag-legal optional">Opcional</span></td>
+            </tr>
+            <tr>
+              <td>Mensajes de WhatsApp (conversaciones)</td>
+              <td>Soporte pedagógico, tutoría con IA, seguimiento de progreso</td>
+              <td><span class="tag-legal auto">Automático</span></td>
+            </tr>
+            <tr>
+              <td>Audios enviados por WhatsApp</td>
+              <td>Transcripción para accesibilidad y respuesta del tutor IA</td>
+              <td><span class="tag-legal auto">Automático</span></td>
+            </tr>
+            <tr>
+              <td>Progreso en cursos y módulos</td>
+              <td>Seguimiento académico, gamificación, certificación</td>
+              <td><span class="tag-legal auto">Automático</span></td>
+            </tr>
+            <tr>
+              <td>Resultados de evaluaciones</td>
+              <td>Emisión de certificados, reportes al empleador/cliente</td>
+              <td><span class="tag-legal auto">Automático</span></td>
+            </tr>
+            <tr>
+              <td>Datos de gamificación (puntos, niveles)</td>
+              <td>Motivación y seguimiento del aprendizaje</td>
+              <td><span class="tag-legal auto">Automático</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box amber">
+        <div class="highlight-box-title">Datos sensibles</div>
+        <div class="highlight-box-body">
+          eki <strong style="font-family:var(--font-body);">no recolecta ni trata datos sensibles</strong>
+          en los términos del artículo 5 de la Ley 1581 de 2012 (origen racial o étnico,
+          orientación política, convicciones religiosas, datos de salud o vida sexual, datos
+          biométricos). En ningún caso se solicitará este tipo de información a los estudiantes.
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       III. FINALIDADES
+  ============================================================ -->
+  <article class="legal-article" id="finalidades">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">III</span>
+        Finalidades del tratamiento
+      </div>
+      <h2 class="article-title">¿Para qué usamos<br/><em>sus datos?</em></h2>
+
+      <p class="legal-text">
+        Sus datos personales son tratados exclusivamente para las siguientes finalidades, que
+        guardan relación directa con la misión de eki de mejorar la productividad de las
+        organizaciones a través de la formación de sus grupos de interés:
+      </p>
+
+      <ul class="legal-list" role="list">
+        <li data-n="1">
+          <span><strong>Prestación del servicio educativo:</strong> envío de contenidos del curso,
+          módulos de formación, evaluaciones y material didáctico a través de WhatsApp.</span>
+        </li>
+        <li data-n="2">
+          <span><strong>Tutoría asistida por inteligencia artificial:</strong> los datos de conversación
+          son procesados por los agentes educativos (Profesor Gerónimo y María) para personalizar
+          la experiencia de aprendizaje de cada estudiante.</span>
+        </li>
+        <li data-n="3">
+          <span><strong>Seguimiento académico y gamificación:</strong> registro del progreso por módulo,
+          asignación de puntos, niveles, badges e insignias como parte del sistema de motivación
+          pedagógica.</span>
+        </li>
+        <li data-n="4">
+          <span><strong>Emisión de certificados digitales:</strong> generación del certificado con código
+          QR verificable, el cual incluye nombre, curso aprobado, calificación y fecha, conforme
+          a los estándares institucionales de eki.</span>
+        </li>
+        <li data-n="5">
+          <span><strong>Comunicación institucional y campañas:</strong> envío de anuncios, recordatorios
+          y mensajes relacionados con los cursos en los que el estudiante se encuentre inscrito.</span>
+        </li>
+        <li data-n="6">
+          <span><strong>Reportes al responsable del contrato:</strong> el cliente (empresa, cooperativa
+          u ONG) que contrató el servicio educativo puede acceder a reportes agregados o individuales
+          sobre el progreso de sus colaboradores.</span>
+        </li>
+        <li data-n="7">
+          <span><strong>Cumplimiento legal:</strong> atención de requerimientos de autoridades judiciales
+          o administrativas competentes, en los términos establecidos por la ley colombiana.</span>
+        </li>
+      </ul>
+
+      <div class="highlight-box green">
+        <div class="highlight-box-title">Compromiso de finalidad</div>
+        <div class="highlight-box-body">
+          Sus datos <strong style="font-family:var(--font-body);">no serán vendidos, cedidos ni
+          comercializados</strong> con terceros con fines distintos a los enunciados en esta política.
+          Cualquier cambio en las finalidades será informado al titular con antelación a su implementación.
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       IV. DERECHOS ARCOP
+  ============================================================ -->
+  <article class="legal-article legal-article--tint" id="derechos">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">IV</span>
+        Derechos del titular
+      </div>
+      <h2 class="article-title">Sus derechos como titular:<br/><em>Acceso, Rectificación,<br/>Cancelación, Oposición y Portabilidad</em></h2>
+
+      <p class="legal-text">
+        La <strong>Ley 1581 de 2012</strong> le garantiza como titular de los datos personales
+        una serie de derechos fundamentales frente al responsable del tratamiento. En eki
+        nos comprometemos a atender el ejercicio de estos derechos en un plazo máximo de
+        <strong>diez (10) días hábiles</strong> para consultas y <strong>quince (15) días hábiles</strong>
+        para reclamos, conforme a los artículos 14 y 15 de la ley.
+      </p>
+
+      <div class="rights-grid">
+        <div class="right-card">
+          <div class="right-letter">A</div>
+          <div class="right-title">Acceso</div>
+          <p class="right-body">
+            Conocer qué datos personales suyos son tratados por eki, con qué finalidad y
+            de qué fuentes provienen. Puede solicitar una copia completa de su información.
+          </p>
+        </div>
+        <div class="right-card">
+          <div class="right-letter">R</div>
+          <div class="right-title">Rectificación</div>
+          <p class="right-body">
+            Solicitar la actualización o corrección de datos inexactos, incompletos o
+            desactualizados que reposen en nuestros sistemas.
+          </p>
+        </div>
+        <div class="right-card">
+          <div class="right-letter">C</div>
+          <div class="right-title">Cancelación</div>
+          <p class="right-body">
+            Pedir la supresión de sus datos cuando ya no sean necesarios para los fines
+            del tratamiento o cuando haya revocado su autorización, salvo excepciones legales.
+          </p>
+        </div>
+        <div class="right-card">
+          <div class="right-letter">O</div>
+          <div class="right-title">Oposición</div>
+          <p class="right-body">
+            Oponerse al tratamiento de sus datos para finalidades específicas, en particular
+            el envío de comunicaciones comerciales o el uso con fines de perfilamiento.
+          </p>
+        </div>
+        <div class="right-card">
+          <div class="right-letter">P</div>
+          <div class="right-title">Portabilidad</div>
+          <p class="right-body">
+            Recibir sus datos en un formato estructurado, de uso común y lectura mecánica,
+            y solicitar su transmisión a otro responsable cuando sea técnicamente posible.
+          </p>
+        </div>
+        <div class="right-card">
+          <div class="right-letter">Q</div>
+          <div class="right-title">Queja ante la SIC</div>
+          <p class="right-body">
+            Si considera que su derecho ha sido vulnerado, puede presentar una queja ante la
+            <strong>Superintendencia de Industria y Comercio</strong> (SIC), autoridad de
+            protección de datos en Colombia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       V. WHATSAPP
+  ============================================================ -->
+  <article class="legal-article" id="whatsapp">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">V</span>
+        Canal WhatsApp
+      </div>
+      <h2 class="article-title">Tratamiento de datos<br/><em>en WhatsApp</em></h2>
+
+      <p class="legal-text">
+        eki opera su plataforma educativa a través de WhatsApp Business, integrado mediante
+        <strong>Twilio</strong> como proveedor de comunicaciones. Al interactuar con eki por
+        WhatsApp, el estudiante debe ser consciente de las siguientes condiciones particulares:
+      </p>
+
+      <ul class="legal-list dash" role="list">
+        <li data-n="—">
+          <span>Todos los mensajes enviados y recibidos son registrados en la base de datos de eki
+          con el propósito exclusivo de brindar el servicio educativo, resolver dudas y hacer
+          seguimiento del progreso académico.</span>
+        </li>
+        <li data-n="—">
+          <span>Los <strong>mensajes de audio</strong> enviados por el estudiante son transcritos de manera
+          automática mediante tecnología de reconocimiento de voz (Vosk, procesado localmente)
+          para facilitar la interacción con los agentes educativos con IA.</span>
+        </li>
+        <li data-n="—">
+          <span>Los datos de conversación son procesados por sistemas de <strong>inteligencia artificial</strong>
+          (OpenAI GPT y Cohere) para generar respuestas pedagógicas personalizadas. Estos
+          proveedores actúan como encargados del tratamiento bajo acuerdos de confidencialidad.</span>
+        </li>
+        <li data-n="—">
+          <span>El primer mensaje que recibe cualquier estudiante nuevo es la solicitud de
+          <strong>autorización de habeas data</strong>. Sin dicha autorización expresa, no es
+          posible continuar con el proceso de formación.</span>
+        </li>
+        <li data-n="—">
+          <span>En caso de que el estudiante escriba palabras como <em>"necesito ayuda"</em>,
+          <em>"urgente"</em> o <em>"hablar con humano"</em>, se activa un protocolo de soporte
+          que puede involucrar la revisión manual de la conversación por parte del equipo de eki.</span>
+        </li>
+      </ul>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">Aviso sobre retención de datos en WhatsApp</div>
+        <div class="highlight-box-body">
+          Los registros de conversación de WhatsApp son conservados por eki durante el tiempo
+          en que el estudiante se encuentre activo en la plataforma y por un período adicional
+          de <strong style="font-family:var(--font-body);">hasta cinco (5) años</strong> contados
+          desde la finalización del último curso, con el fin de garantizar la verificabilidad
+          de los certificados emitidos. Pasado este plazo, los datos son eliminados de forma segura.
+        </div>
+      </div>
+    </div>
+  </article>
+
+
+
+  <!-- ============================================================
+       VII. SEGURIDAD
+  ============================================================ -->
+  <article class="legal-article" id="seguridad">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">VI</span>
+        Seguridad de la información
+      </div>
+      <h2 class="article-title">¿Cómo protegemos<br/><em>su información?</em></h2>
+
+      <p class="legal-text">
+        eki implementa medidas técnicas, humanas y administrativas proporcionales al riesgo
+        identificado para garantizar la confidencialidad, integridad y disponibilidad de
+        los datos personales tratados en la plataforma.
+      </p>
+
+      <div class="security-grid">
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Cifrado en tránsito</div>
+            <p class="sec-body">Toda comunicación entre la plataforma y los servidores se realiza bajo
+            protocolo HTTPS con certificado TLS. Los mensajes de WhatsApp cuentan con cifrado
+            de extremo a extremo propio de la plataforma.</p>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Base de datos segura</div>
+            <p class="sec-body">Los datos se almacenan en AWS RDS (PostgreSQL) con acceso restringido
+            por roles y permisos. El bucket S3 de archivos multimedia cuenta con políticas de
+            acceso y URLs firmadas de tiempo limitado.</p>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Autorización y habeas data</div>
+            <p class="sec-body">Ningún dato es procesado sin la autorización previa, expresa e informada
+            del titular. La aceptación se registra con fecha y hora en el sistema, conforme
+            a la Ley 1581 de 2012.</p>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Control de acceso interno</div>
+            <p class="sec-body">El acceso al panel de administración es autenticado y auditado. Solo
+            personal autorizado de eki puede acceder a datos personales de los estudiantes,
+            bajo políticas de necesidad y mínimo privilegio.</p>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Monitoreo y auditoría</div>
+            <p class="sec-body">Todos los eventos de acceso, modificación y eliminación de datos quedan
+            registrados en logs de auditoría almacenados en AWS. Se realizan revisiones
+            periódicas de seguridad sobre los sistemas en producción.</p>
+          </div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-icon">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <div class="sec-title">Gestión de incidentes</div>
+            <p class="sec-body">Ante un incidente de seguridad que comprometa datos personales, eki
+            notificará a los titulares afectados y a la Superintendencia de Industria y
+            Comercio (SIC) en los términos y plazos establecidos por la normativa vigente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       VIII. VIGENCIA
+  ============================================================ -->
+  <article class="legal-article legal-article--alt" id="vigencia">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">VII</span>
+        Vigencia y conservación
+      </div>
+      <h2 class="article-title">¿Por cuánto tiempo<br/><em>conservamos sus datos?</em></h2>
+
+      <p class="legal-text">
+        Los datos personales serán conservados por eki durante el tiempo en que sea necesario
+        para cumplir con las finalidades que justificaron su recolección, o mientras subsista
+        la obligación legal de conservarlos.
+      </p>
+      <p class="legal-text">
+        Como criterio general, eki aplica los siguientes períodos de conservación, contados
+        a partir del último acceso activo del estudiante a la plataforma o de la finalización
+        del último curso:
+      </p>
+
+      <ul class="legal-list green" role="list">
+        <li data-n="1">
+          <span><strong>Datos de identificación (nombre, cédula):</strong> conservados durante la
+          vigencia del contrato con el cliente y hasta diez (10) años después, en cumplimiento
+          de obligaciones contables y tributarias.</span>
+        </li>
+        <li data-n="2">
+          <span><strong>Datos académicos y certificados:</strong> conservados de forma indefinida en lo
+          que respecta al registro del certificado emitido, para permitir su verificación
+          futura por empleadores u otras entidades.</span>
+        </li>
+        <li data-n="3">
+          <span><strong>Conversaciones de WhatsApp:</strong> conservadas por cinco (5) años desde la
+          finalización del último curso, salvo que el titular solicite su eliminación anticipada
+          y no exista obligación legal que lo impida.</span>
+        </li>
+        <li data-n="4">
+          <span><strong>Datos de gamificación:</strong> conservados mientras el estudiante tenga cuenta
+          activa. Al solicitar la cancelación, son eliminados en un plazo no mayor a treinta
+          (30) días hábiles.</span>
+        </li>
+      </ul>
+
+      <p class="legal-text">
+        Esta política de tratamiento de datos <strong>entra en vigencia desde el 25 de febrero de 2025</strong>
+        y permanecerá vigente hasta que sea modificada o derogada por eki, lo cual será informado
+        oportunamente a los titulares a través de los canales oficiales de la plataforma.
+      </p>
+
+      <div class="last-updated">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Última actualización: 25 de febrero de 2025
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       IX. CÓMO EJERCER SUS DERECHOS
+  ============================================================ -->
+  <article class="legal-article" id="solicitudes">
+    <div class="container">
+      <div class="article-eyebrow">
+        <span class="article-num-badge">VIII</span>
+        Ejercicio de derechos
+      </div>
+      <h2 class="article-title">¿Cómo ejercer sus derechos<br/><em>ante eki?</em></h2>
+
+      <p class="legal-text">
+        Para ejercer cualquiera de los derechos establecidos en el artículo 8 de la Ley 1581
+        de 2012 (acceso, rectificación, cancelación, oposición o portabilidad), el titular
+        o su representante legal deberá dirigir una comunicación escrita al canal oficial
+        de atención de eki, incluyendo la siguiente información mínima:
+      </p>
+
+      <ul class="legal-list" role="list">
+        <li data-n="1"><span>Nombre completo del titular y número de documento de identidad.</span></li>
+        <li data-n="2"><span>Descripción clara y precisa de los datos respecto de los cuales se ejerce el derecho.</span></li>
+        <li data-n="3"><span>Derecho que desea ejercer: acceso, rectificación, cancelación, oposición o portabilidad.</span></li>
+        <li data-n="4"><span>Documentos de soporte que acrediten la titularidad o la representación legal, si aplica.</span></li>
+        <li data-n="5"><span>Datos de contacto del titular para la respuesta (correo electrónico o número de WhatsApp).</span></li>
+      </ul>
+
+      <div class="highlight-box">
+        <div class="highlight-box-title">Plazos de atención garantizados</div>
+        <div class="highlight-box-body">
+          <strong style="font-family:var(--font-body);">Consultas:</strong> respuesta en máximo diez (10) días hábiles, prorrogables por cinco (5) días hábiles adicionales con notificación al titular.<br/><br/>
+          <strong style="font-family:var(--font-body);">Reclamos:</strong> respuesta en máximo quince (15) días hábiles, prorrogables por ocho (8) días hábiles adicionales con notificación al titular.
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ============================================================
+       CONTACT
+  ============================================================ -->
+  <section class="contact-section">
+    <div class="container contact-content">
+      <div class="a1">
+        <span class="section-eyebrow" style="
+          display:inline-block;
+          font-size:.63rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--green-lime);
+          background:rgba(120,200,34,.12);
+          border:1px solid rgba(120,200,34,.3);
+          border-radius:100px;
+          padding:4px 14px;
+          margin-bottom:16px;
+        ">Canal de atención oficial</span>
+        <h2 class="contact-title a2">
+          Radique su solicitud<br/>de <em>habeas data</em>
+        </h2>
+        <p class="contact-lead a3">
+          Toda solicitud relacionada con el tratamiento de sus datos personales
+          debe ser enviada exclusivamente al correo oficial de eki. Le garantizamos
+          respuesta dentro de los plazos legales establecidos.
+        </p>
+      </div>
+
+      <div class="a4">
+        <div class="contact-card">
+          <div class="contact-card-label">Correo oficial de habeas data</div>
+          <div class="contact-email"><a href="mailto:comunidad.educativa@eki.com.co">comunidad.educativa@eki.com.co</a></div>
+          <div class="contact-details">
+            <strong>Asunto sugerido:</strong> "Solicitud Habeas Data — [Su nombre]"<br/>
+            Atención: Área de Protección de Datos · eki<br/>
+            Horario de atención: lunes a viernes, 8:00 a.m. – 5:00 p.m. (hora Colombia)
+          </div>
+          <a href="/cdn-cgi/l/email-protection#b1d2dedcc4dfd8d5d0d59fd4d5c4d2d0c5d8c7d0f1d4dad89fd2dedc9fd2de8ec2c4d3dbd4d2c58ce2deddd8d2d8c5c4d5948381f9d0d3d4d0c2948381f5d0c5d0" class="btn-email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Enviar solicitud por correo
+          </a>
+          <div class="response-chips">
+            <span class="response-chip">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Consultas: 10 días hábiles
+            </span>
+            <span class="response-chip">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Reclamos: 15 días hábiles
+            </span>
+            <span class="response-chip">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Sin costo para el titular
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+
+      <div>
+        <div class="footer-logo">
+          <span style="font-family:var(--font-legal);font-size:1.45rem;font-weight:700;color:var(--white);letter-spacing:-.02em;">eki</span>
+        </div>
+        <p class="footer-tagline">
+          Educación con equidad<br/>
+          Formación con propósito para comunidades y organizaciones.
+        </p>
+        <span class="footer-law-tag">Ley 1581 · Decreto 1377 · Colombia</span>
+      </div>
+
+      <div>
+        <nav class="footer-links" aria-label="Pie de página">
+          <a href="#">Política de privacidad</a>
+          <a href="#">Términos y condiciones</a>
+          <a href="#">Verificar certificado</a>
+          <a href="#">Soporte técnico</a>
+          <a href="#">Accesibilidad</a>
+        </nav>
+        <p class="footer-copy">
+          © 2024 eki — Educación con equidad. Todos los derechos reservados.<br/>
+          Documento sujeto a actualización conforme a la normativa colombiana vigente.
+        </p>
+      </div>
+
+      <div>
+        <div style="font-size:.75rem; color:rgba(255,255,255,.45); line-height:1.7; font-family:var(--font-legal); font-style:italic;">
+          "Toda persona tiene derecho a conocer,<br/>actualizar y rectificar las informaciones<br/>
+          que se hayan recogido sobre ella."<br/>
+          <span style="font-style:normal; font-family:var(--font-body); font-size:.68rem; color:rgba(255,255,255,.25);">— Art. 15, Constitución Política de Colombia</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Security bar -->
+  <div class="sec-bar">
+    <div class="container">
+      <p class="sec-bar-text">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 
