@@ -1,0 +1,5 @@
+/*
+  Netlify redirects for Single Page Applications or static HTML sites.
+  This ensures that all routes serve index.html, preventing 404 errors on reload or deep links.
+*/
+/*    /index.html   200
